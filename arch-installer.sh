@@ -30,6 +30,21 @@ lsblk -d -o NAME,SIZE,MODEL | grep -v loop
 echo ""
 read -p "Enter the disk to install to (e.g., sda, nvme0n1, vda): " DISK
 
+# Auto-detect if there's only one disk
+AVAILABLE_DISKS=($(lsblk -d -n -o NAME | grep -v loop))
+if [ ${#AVAILABLE_DISKS[@]} -eq 1 ]; then
+    DISK=${AVAILABLE_DISKS[0]}
+    echo ""
+    echo "Only one disk found: $DISK"
+    read -p "Use /dev/$DISK for installation? [Y/n]: " AUTO_CONFIRM < /dev/tty
+    if [[ $AUTO_CONFIRM =~ ^[Nn] ]]; then
+        read -p "Enter the disk to install to (e.g., sda, nvme0n1, vda): " DISK < /dev/tty
+    fi
+else
+    echo ""
+    read -p "Enter the disk to install to (e.g., sda, nvme0n1, vda): " DISK < /dev/tty
+fi
+
 # Validate disk exists
 if [[ ! -b "/dev/$DISK" ]]; then
     echo "Error: /dev/$DISK does not exist!"
