@@ -111,7 +111,7 @@ hwclock --systohc
 echo "pt_BR.UTF-8 UTF-8" >> /etc/locale.gen
 echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen
 locale-gen
-echo "LANG=pt_BR.UTF-8" > /etc/locale.conf
+echo "LANG=en_US.UTF-8" > /etc/locale.conf
 
 # Set keyboard layout
 echo "KEYMAP=br-abnt2" > /etc/vconsole.conf
