@@ -27,9 +27,6 @@ timedatectl set-ntp true
 echo "Available disks:"
 lsblk -d -o NAME,SIZE,MODEL | grep -v loop
 
-echo ""
-read -p "Enter the disk to install to (e.g., sda, nvme0n1, vda): " DISK
-
 # Auto-detect if there's only one disk
 AVAILABLE_DISKS=($(lsblk -d -n -o NAME | grep -v loop))
 if [ ${#AVAILABLE_DISKS[@]} -eq 1 ]; then
@@ -53,7 +50,7 @@ fi
 
 echo ""
 echo "WARNING: This will COMPLETELY ERASE /dev/$DISK"
-read -p "Are you sure? Type 'yes' to continue: " CONFIRM
+read -p "Are you sure? Type 'yes' to continue: " CONFIRM < /dev/tty
 
 if [[ "$CONFIRM" != "yes" ]]; then
     echo "Installation cancelled."
@@ -94,7 +91,7 @@ pacman -Sy
 
 # Install base system
 echo "Installing base system..."
-pacstrap /mnt base base-devel linux linux-firmware grub networkmanager sudo
+pacstrap /mnt base base-devel linux linux-firmware grub networkmanager sudo git
 
 # Generate fstab
 echo "Generating fstab..."
@@ -169,7 +166,8 @@ systemctl enable docker
 # Add user to docker group
 usermod -aG docker veloxsz
 
-# Configure LightDM
+# Create lightdm config directory and configure
+mkdir -p /etc/lightdm
 cat << 'LIGHTDM_CONF' > /etc/lightdm/lightdm-gtk-greeter.conf
 [greeter]
 background = #2c3e50
@@ -185,6 +183,13 @@ LIGHTDM_CONF
 cat << 'COMPLETE_SETUP' > /home/veloxsz/complete-setup.sh
 #!/bin/bash
 echo "=== Post-Installation Setup ==="
+
+# Check if git is available
+if ! command -v git &> /dev/null; then
+    echo "Git not found, installing..."
+    sudo pacman -S --noconfirm git
+fi
+
 echo "Installing AUR helper and packages..."
 
 # Install yay
