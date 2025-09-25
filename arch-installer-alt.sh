@@ -287,7 +287,7 @@ echo "Updating mirrors..."
 pacman -Sy
 
 echo "Installing base system packages..."
-pacstrap /mnt base base-devel linux linux-firmware linux-headers nano sudo ntfs-3g git zsh grub networkmanager efibootmgr os-prober wget
+pacstrap /mnt base base-devel linux linux-firmware linux-headers nano sudo ntfs-3g git zsh grub networkmanager efibootmgr os-prober wget xorg-server
 
 echo "Generating fstab..."
 genfstab -U /mnt >> /etc/fstab
