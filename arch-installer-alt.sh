@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Getting user inputs
-while getopts "u:p:rp" opt; do
+while getopts "u:p:rp:a:gp" opt; do
   case $opt in
     u)
       username=$OPTARG
