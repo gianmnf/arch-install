@@ -295,7 +295,7 @@ genfstab -U /mnt >> /etc/fstab
 echo "Saving timezone..."
 ln -sf "/usr/share/zoneinfo/$TZ" /mnt/etc/localtime
 
-echo "Setting default language to english, you can later set your desired language editing /etc/locale.gen and running locale-gen command. You also will need to edit and /etc/locale.conf too."
+echo "Setting default language to english, you can later set your desired language editing /etc/locale.gen and running locale-gen command. You also will need to edit /etc/locale.conf too."
 echo "en_US.UTF-8 UTF-8" >> /mnt/etc/locale.gen
 echo "LANG=en_US.UTF-8" >> /mnt/etc/locale.conf
 
@@ -350,8 +350,8 @@ arch-chroot /mnt /bin/bash << EOF
 
   echo "Installing yay (AUR helper)..."
   git clone https://aur.archlinux.org/yay.git /tmp/yay
-  chown -R "$NEW_USERNAME:$NEW_USERNAME" /tmp/yay
-  sudo -u "$NEW_USERNAME" sh -c "cd /tmp/yay && makepkg -si --noconfirm"
+  chown -R "$username:$username" /tmp/yay
+  sudo -u "$username" sh -c "cd /tmp/yay && makepkg -si --noconfirm"
 
   # Add user to docker group
   systemctl enable --now docker.service
