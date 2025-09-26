@@ -41,7 +41,7 @@ echo "|       1 - KEYBOARD LAYOUT         |"
 echo "-------------------------------------"
 echo ""
 # If you already know your keyboard layout add it through this variable:
-# KBD_LAYOUT=br-abnt2 # This would load the brazilian abnt2 layout
+KBD_LAYOUT=br-abnt2 # This would load the brazilian abnt2 layout
 
 if [[ -n "$KBD_LAYOUT" ]]; then
     loadkeys "$KBD_LAYOUT"
@@ -287,7 +287,7 @@ echo "Updating mirrors..."
 pacman -Sy
 
 echo "Installing base system packages..."
-pacstrap /mnt base base-devel linux linux-firmware linux-headers nano sudo ntfs-3g git zsh grub networkmanager efibootmgr os-prober wget xorg-server
+pacstrap /mnt base base-devel linux linux-firmware linux-headers nano sudo ntfs-3g git zsh grub networkmanager efibootmgr os-prober wget xorg-server plasma kde-applications lightdm docker jdk17-openjdk maven steam visual-studio-code-bin
 
 echo "Generating fstab..."
 genfstab -U /mnt >> /etc/fstab
@@ -344,9 +344,6 @@ arch-chroot /mnt /bin/bash << EOF
   else
     pacman -S xf86-video-intel --noconfirm
   fi
-
-  echo "Installing packages..."
-  pacman -S --noconfirm plasma kde-applications lightdm docker jdk17-openjdk maven steam visual-studio-code-bin
 
   echo "Installing yay (AUR helper)..."
   git clone https://aur.archlinux.org/yay.git /tmp/yay
